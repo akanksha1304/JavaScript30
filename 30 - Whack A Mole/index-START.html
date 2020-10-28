@@ -36,6 +36,70 @@
   const holes = document.querySelectorAll('.hole');
   const scoreBoard = document.querySelector('.score');
   const moles = document.querySelectorAll('.mole');
+  let lastHoleIdx;
+  let timeUp = false;
+
+  function randomTime(min,max) {
+    return Math.round(Math.random()*(max-min)+min);
+  }
+
+  function randomHole(holes) {
+    // console.log(holes);
+    const idx = Math.floor(Math.random()*holes.length);
+    if (idx===lastHoleIdx) {
+      console.log('ah nah!');
+      return randomHole(holes);
+    }
+
+    lastHoleIdx = idx;
+    return holes[idx];
+  } 
+
+  function peep() {
+    const peepTime = randomTime(200,1000);
+    const peepHole = randomHole(holes);
+    // console.log(peepTime, peepHole);
+
+    peepHole.classList.add('up');
+
+    setTimeout(() => {
+      peepHole.classList.remove('up');
+      if (!timeUp) {
+        peep();
+      }
+    }, peepTime);
+  }
+
+  function startGame() {
+    scoreBoard.textContent = 0;
+    timeUp = false;
+    peep();
+
+    // set a timeout of 10 secs, at the end of which timeUp is set true, hence peep() is no longer called
+    setTimeout(() => timeUp=true, 10000);
+  }
+
+  function updateScore(e) {
+    // if click simulated using javascript code, 
+    // then isTrusted will be false
+    if (!e.isTrusted) return;
+    // console.log(e,this, this.classList);
+    
+    // // the below code is not required: because if I clicked 
+    // on a mole then it has to be up at that time.
+    // if (this.classList.contains('up')) {
+    //   console.log('yay');
+    //   scoreBoard.textContent += 1;
+    // }
+
+    scoreBoard.textContent = parseInt(scoreBoard.textContent) + 1;
+
+    // even if the mole is to be up for certain amount of time,
+    // but if I click it, it should go down imediately
+    this.classList.remove('up');
+  }
+
+  moles.forEach(mole => mole.addEventListener('click', updateScore));
 
 </script>
 </body>

@@ -54,8 +54,55 @@
   </div>
 
 <script>
+  const navElem = document.querySelector('#main');
+  const navTop = navElem.offsetTop;
+  const contentDiv = document.querySelector('.site-wrap');
+
+  function fixNav(e) {
+
+    // once the nav is fixed to the top, its offset (navElem.offsetTop) becomes 0
+    // hence we need to store the absolute value of te nav's top in navTop
+    console.log(navTop, navElem.offsetTop, window.scrollY,navElem.offsetHeight);
+    
+    if (window.scrollY >= navTop) {
+      // console.log('adding');
+      document.body.classList.add('fixed-nav');
+
+      // when nav is fixed then it stops occupying space 
+      // in the normal document flow
+      // hence, we need to add padding so the the rest of the body doesn't
+      // just jump up by the height of the nav just as the nav gets fixed
+      document.body.style.paddingTop = navElem.offsetHeight+'px';
+    }
+    else {
+      // console.log('remove');
+      document.body.classList.remove('fixed-nav');
+      document.body.style.paddingTop = 0;
+    }
+  }
+  // console.log(navElem);
+  window.addEventListener('scroll', fixNav);
 
 </script>
+
+<!-- <script>
+  // Not a ton of code, but hard to
+  const nav = document.querySelector('#main');
+  let topOfNav = nav.offsetTop;
+
+  function fixNav() {
+    if (window.scrollY >= topOfNav) {
+      document.body.style.paddingTop = nav.offsetHeight + 'px';
+      document.body.classList.add('fixed-nav');
+    } else {
+      document.body.classList.remove('fixed-nav');
+      document.body.style.paddingTop = 0;
+    }
+  }
+
+  window.addEventListener('scroll', fixNav);
+
+</script> -->
 
 </body>
 </html>

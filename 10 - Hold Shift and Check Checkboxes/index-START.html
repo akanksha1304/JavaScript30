@@ -96,6 +96,76 @@
   </div>
 
 <script>
+// let lastChecked = -1;
+
+// function markAll(e) {
+//   console.log(e);
+//   para = this.querySelector('p');
+//   // console.log(this,para, para.innerHTML);
+//   // console.log(e);
+//   // paraText = para.innerHTML;
+
+//   // console.log(nodes, nodes.indexOf(this));
+//   const idx = nodes.indexOf(this);
+//   console.log(idx,e.shiftKey);
+
+//   // shift key pressed
+//   if (e.shiftKey && this.checked) {
+//     console.log('here');
+//     // get index of the starting element
+//     lastChecked = idx;
+//   }
+//   // shift key released or never held
+//   else {
+//     console.log('there', lastChecked);
+//     // shift key never held
+//     if (lastChecked===-1) {
+//       //do nothing
+//     }
+//     //shift key released
+//     else {
+//       // get index of the current checked item
+//       const curChecked = idx;
+
+//       lastChecked = lastChecked + 1;
+//       // check all the items between lastChecked and curChecked item
+//       while (true) {
+//         if (lastChecked===curChecked) {
+//           break;
+//         }
+//         console.log(nodes[lastChecked]);
+//       }
+
+//       // reset lastChecked
+//       lastChecked = -1;
+//     }
+//   }
+// }
+
+let lastChecked;
+function markAll(e) {
+  console.log(e);
+  let inBet = false;
+  // shift key pressed
+  if (e.shiftKey && this.checked) {
+      items.forEach(item => {
+        if (item==this || item==lastChecked) {
+          inBet = !inBet;
+        }
+        
+        if (inBet) {
+          item.checked = true;
+        }
+      });
+  }
+
+  lastChecked = this;
+}
+
+items = document.querySelectorAll('input[type="checkbox"]');
+console.log(items);
+var nodes = Array.prototype.slice.call(items);
+items.forEach(item => item.addEventListener('click', markAll));
 </script>
 </body>
 </html>

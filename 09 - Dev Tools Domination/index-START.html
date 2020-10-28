@@ -18,28 +18,81 @@
     }
 
     // Regular
+    console.log('hello');
 
     // Interpolated
+    console.log('Hello, I am a %s', 'Isha!');
 
     // Styled
+    console.log('%c I am some great text', 'font-size:40px; background:#BADA55');
 
     // warning!
+    console.warn('oh no!');
 
     // Error :|
+    console.error('no no no');
 
     // Info
+    console.info('some info');
 
     // Testing
+    console.assert(1===2,'this is wrong');
+    const para = document.querySelector('p');
+    console.assert(para.classList.contains('random-cls'), 'No such class');
 
     // clearing
+    console.clear();
 
     // Viewing DOM Elements
+    console.log(para);
+    console.dir(para);
+    console.clear();
 
     // Grouping together
+    dogs.forEach(dog => {
+      console.group(`${dog.name}`);
+      console.log(`Dog name is ${dog.name}`);
+      console.log(`${dog.name} is ${dog.age} years old`);
+      console.groupEnd(`${dog.name}`);
+    })
+
+    dogs.forEach(dog => {
+      console.groupCollapsed(`Collapsed: ${dog.name}`);
+      console.log(`Dog name is ${dog.name}`);
+      console.log(`${dog.name} is ${dog.age} years old`);
+      console.groupEnd(`Collapsed: ${dog.name}`);
+    })
 
     // counting
+    console.count('well');
+    console.count('well');
+    console.count('well');
+    console.count('good');
+    console.count('good');
+    console.count('well');
+    console.count('well');
+    console.count('well');
+    console.count('good');
+    console.count('good');
+    console.count('good');
+    console.count('good');
+    console.count('well');
+    console.count('well');
+    console.count('well');
+    console.count('well');
+    console.count('well');
+    console.count('good');
+    console.count('good');
 
     // timing
+    console.time('logging');
+    console.log('hello');
+    console.log('great');
+    console.log('day');
+    console.timeEnd('logging');
+
+    // to display array data in tabular form
+    console.table(dogs);
 
   </script>
 </body>

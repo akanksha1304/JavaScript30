@@ -15,6 +15,33 @@
   </div>
 
 <script>
+  const video = document.querySelector('video');
+  const speed = document.querySelector('.speed');
+  const bar = document.querySelector('.speed-bar');
+
+  speed.addEventListener('mousemove', function(e) {
+    // console.log(e, e.pageY, this.offsetTop);
+
+    // e.pageY will give the current absolute Y location in the page
+    // this.offsetTop will give the Y location of the top edge of the
+    // element 'this' (speed container)
+    // the difference between them will give the relative Y location of 
+    // the cursor with respect to the top of the speed container
+    const diff = e.pageY - this.offsetTop;
+    const ratio = diff/this.offsetHeight;
+
+    const minSpeed = 0.4;
+    const maxSpeed = 4;
+    const calcSpeed = (maxSpeed-minSpeed)*ratio + minSpeed;
+    
+    // console.log({diff, ratio, calcSpeed});
+
+    bar.style.height = Math.round(ratio*100)+'%';
+    bar.textContent = calcSpeed.toFixed(2)+'x';
+
+    video.playbackRate = calcSpeed;
+  });
+
 </script>
 </body>
 </html>

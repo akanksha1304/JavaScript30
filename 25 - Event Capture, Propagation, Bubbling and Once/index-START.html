@@ -42,7 +42,37 @@
 
 <button></button>
 <script>
+  const divElems = document.querySelectorAll('div');
 
+  function logText(e) {
+    // console.log(`target is: ${e.target}, class is: ${this.classList.value}`);
+    console.log(this.classList.value);
+
+    // // if capture is true then the event will only be
+    // // trigggered on the outermost element
+    // // if capture is false, then the event will only be
+    // // triggered on the element we clicked
+    // e.stopPropagation();
+  }
+
+  // // be default it is bubble up
+  // // The event will be triggered first and will flow from the elment we clicked
+  // // to the outermost element in the nesting
+  // // divElems.forEach(div => div.addEventListener('click', logText));
+  // divElems.forEach(div => div.addEventListener('click', logText, {capture:false}));
+
+  // we can use once:true so that the element unbinds itself after one event
+  // this is same as: element.removeEventListener(<event>, method);
+  divElems.forEach(div => div.addEventListener('click', logText, {once:true}));
+  
+  // // capture: the evet trigger will flow from the outermost element
+  // // down to the element we clicked
+  // divElems.forEach(div => div.addEventListener('click', logText, {capture:true}));
+
+  // The event will only be triggered once, because once:true
+  buttonE = document.querySelector('button');
+  buttonE.addEventListener('click',() => 
+  {alert('clicked');}, {once:true});
 </script>
 </body>
 </html>

@@ -43,11 +43,68 @@
 
   </style>
 
-  <ul id="bands"></ul>
+  <ul id="bands">
+    <li>ddkkf</li>
+  </ul>
 
 <script>
 const bands = ['The Plot in You', 'The Devil Wears Prada', 'Pierce the Veil', 'Norma Jean', 'The Bled', 'Say Anything', 'The Midway State', 'We Came as Romans', 'Counterparts', 'Oh, Sleeper', 'A Skylit Drive', 'Anywhere But Here', 'An Old Dog'];
 
+// const bands = ['The Plot in You', 'Anywhere But Here', 'Norma Jean', 'The Bled'];
+
+
+// let bandsMap = bands.map(band => band.split(' '));
+// console.table(bandsMap);
+
+// bandsMap = bandsMap.sort((a,b) => {
+//   let str1;
+//   let str2;
+//   if (a[0]=== 'A' || a[0]==='An' || a[0]==='The') {
+//     str1 = (a.slice(1)).join(' ');
+//   }
+//   else {
+//     str1 = a.join(' ');
+//   }
+
+//   if (b[0]==='A' || b[0]==='An' || b[0]==='The') {
+//     str2 = (b.slice(1)).join(' ');
+//   }
+//   else {
+//     str2 = b.join(' ');
+//   }
+
+//   // console.log(a,b,str1,str2);
+//   if (str1>str2) {
+//     return 1;
+//   }
+//   else {
+//     return -1;
+//   }
+// })
+
+// console.table(bandsMap);
+// const bandsSorted = bandsMap.map(bandMap => bandMap.join(' '));
+// console.table(bandsSorted);
+
+// another way using strip
+
+function strip(band) {
+  // if starts with (using ^) case insensitive (using /i) 
+  // a<space>, an<space> or the<space>,
+  // then replace a<space>, an<space> or the<space> with ''
+  // trim will remove any leading or trailing spaces
+  return band.replace(/^(a |an |the )/i, '').trim();
+}
+
+const bandsSorted = bands.sort((a,b) => strip(a)>strip(b) ? 1:-1);
+console.table(bandsSorted);
+
+const bandsList = document.querySelector('#bands');
+bandsList.innerHTML = bandsSorted.map(band => {
+  return `<li>
+          ${band}
+          </li>`;
+}).join('');
 
 </script>
 

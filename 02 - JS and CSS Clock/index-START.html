@@ -62,13 +62,45 @@
       background: black;
       position: absolute;
       top: 50%;
+      transform-origin:100%;
+      transform:rotate(90deg);
+      transition-timing-function:cubic-bezier(0.1, 2.7, 0.58, 1);
+      transition: all 0.05s;
     }
 
-  </style>
+    /* .second-hand {
+      transform:rotate(40deg);
+      transform-origin:100%;
+      } */
 
+  </style>
   <script>
 
+  function setTime() {
+    const date = new Date();
+    secs = date.getSeconds();
+    hrs = date.getHours();
+    mins = date.getMinutes();
+    const secdeg = ((secs/60)*360) + 90;
+    const mindeg = ((mins / 60) * 360) + ((secs/60)*6) + 90;
+    const hrdeg = ((hrs / 12) * 360) + ((mins/60)*30) + 90;
 
+    // get the element with class .second-hand
+    const secondHand = document.querySelector('.second-hand');
+
+    // apply 'transform' style to rotate the element by 'secdeg' degrees
+    secondHand.style.transform = `rotate(${secdeg}deg)`;
+
+    const hourHand = document.querySelector('.hour-hand');
+    hourHand.style.transform = `rotate(${hrdeg}deg)`
+
+    const minHand = document.querySelector('.min-hand');
+    minHand.style.transform = `rotate(${mindeg}deg)`;
+
+    console.log(secondHand, minHand, hourHand);
+  };
+
+  setInterval(setTime,1000);
   </script>
 </body>
 </html>

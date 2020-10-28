@@ -35,6 +35,56 @@
   </style>
 
 <script>
+  const hero = document.querySelector('.hero');
+  const text = hero.querySelector('h1');
+
+  function putShadow(e) {
+    // // e.target can be 'this' which is div element with 'hero' class in this case
+    // // or it can be any of the div's children if mouse is on that
+    // console.log(e.target, this);
+
+    // width and height of the div element
+    const width = this.offsetWidth;
+    const height = this.offsetHeight;
+
+    // max width and height of a shadow
+    const shadowWalk = 100;
+
+    // offsetX and offsetY of the cursor/mouse inside a div element or its child (if e.target is child)
+    // For child, offsetX and offsetY will be relative to its parent
+    let x = e.offsetX;
+    let y = e.offsetY;
+    // console.log(x,y);
+
+    // since for child, x(e.offsetX) and y(e.offsetY) is relative to its parent
+    // hence adjust it by adding the leftOffset and the topOffset of the child
+    if (e.target!==this) {
+      x += e.target.offsetLeft;
+      y += e.target.offsetTop;
+    }
+    // console.log(x,y, width, height);
+
+    // in left side (x<width/2), shadow should have negative shadowX
+    //  if x=0, then shadowX = -walk/2 = -50
+    // in the right side (x>width/2), shadow should have positive shadowX
+    // if x=width, then shadowX = walk-walk/2 = 50
+    const shadowX = Math.round(((shadowWalk/width) * x) - (shadowWalk/2));
+
+    // in the top (y<height/2), shadow should have negative shadowY
+    // if y=0, then shadowY = -walk/2 = -50
+    // in the bottom (y>height/2), shadow should have positive shadowY
+    // if y=height, then shadowY = walk-walk/2 = 50
+    const shadowY = Math.round(((shadowWalk/height) * y) - (shadowWalk/2));
+
+    // console.log(x,y, shadowX, shadowY);
+
+    // set the shadow's position and orientation according to the mouse position
+    text.style.textShadow = `${shadowX}px ${shadowY}px 0 red`;
+
+  }
+
+  hero.addEventListener('mousemove', putShadow);
+
 </script>
 </body>
 </html>

@@ -17,6 +17,60 @@
 <script>
 const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
 
+const places = [];
+fetch(endpoint)
+              .then(blob => blob.json())
+              .then(data => places.push(...data));
+
+// console.log(places);
+
+function getMatches(toMatch, places) {
+  const regex = new RegExp(toMatch, 'gi');
+  return  places.filter(place => { return place.city.match(regex) || place.state.match(regex)});
+  console.log(regex,toMatch, selected);
+  return selected;
+}
+
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+function displayMatches() {
+  // // display the input's 'value' attribute's value
+  // console.log(this.value);
+
+  const matches = getMatches(this.value,places);
+  // console.log(matches);
+
+  // creating html
+  // it will return an array of all the mapping of the items of the list matches
+  const suggestionHtml = matches.map(matchedPlace =>{
+      // highlighting the matched phrase in the matches
+      const regex = new RegExp(this.value,'gi');
+      const cityName = matchedPlace.city.replace(regex,`<span class='hl'>${this.value}</span>`);
+      const stateName = matchedPlace.state.replace(regex,`<span class='hl'>${this.value}</span>`);
+      const population = numberWithCommas(matchedPlace.population);
+      return `<li>
+          <span>${cityName}, ${stateName}</span>
+          <span>${population}</span>
+      </li>`
+      });
+  // console.log(suggestionHtml);
+
+  // converting array to list, joined on no space
+  const matchesArrToStr = suggestionHtml.join(' ');
+
+  // adding the above created html as the child of suggestion element
+  suggestion.innerHTML = matchesArrToStr;
+}
+
+queryBox = document.querySelector('input');
+queryBox.addEventListener('change', displayMatches);
+queryBox.addEventListener('keyup', displayMatches);
+
+suggestion = document.querySelector('.suggestions');
+
+
 </script>
 </body>
 </html>

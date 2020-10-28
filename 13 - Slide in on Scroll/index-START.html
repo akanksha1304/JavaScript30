@@ -58,6 +58,39 @@
       };
     }
 
+    function slideImg(e) {
+      console.count(e.type, window.scrollY);
+
+      imgs.forEach(img => {
+        // image's half showing location threshold according to current scrolled location (in Y-axis)
+        const imgHalfShowingLocation = window.scrollY + window.innerHeight - (img.height/2);
+        
+        // at least half of the image is showing if the image absolute start is greater than or equal to the
+        // calculated half showing location threshold according to current scrolled page (in) Y-axis)
+        const isImgShowing = imgHalfShowingLocation >= img.offsetTop;
+
+        // image bottom is equal to image's start location + its height
+        const imgBottom = img.offsetTop + img.height;
+
+        // image is past the page if the scrolled window start is greater than
+        // the image's bottom, not past yet if the image's bottom is still greater than
+        // the window.scrollY
+        const isImgNotPastYet = imgBottom > window.scrollY;
+
+        console.log(imgHalfShowingLocation, img.offsetTop, imgBottom, img.height);
+        if (isImgShowing && isImgNotPastYet) {
+          img.classList.add('active');
+        }
+        else {
+          img.classList.remove('active');
+        }
+      })
+    }
+
+    const imgs = document.querySelectorAll('img');
+
+    window.addEventListener('scroll', debounce(slideImg));
+
   </script>
 
   <style>

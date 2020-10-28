@@ -12,6 +12,52 @@
 <script>
   window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
+  const recognition = new SpeechRecognition();
+
+  // setting it true will display that text as you speak,
+  // rather than waiting to stop speaking before getting the text
+  recognition.interimResults = true;
+
+  const words = document.querySelector('.words');
+  let para = document.createElement('p');
+
+  // once result is finished (isFinal=true)
+  // then it unbinds itself and hence it is not listening
+  // Hence, we need to start the recognition again to listen for results
+  recognition.addEventListener('result', e => {
+    // console.log(e.results);
+    const results = Array.from(e.results);
+    const transcripts = results.map(result => {
+      return result[0].transcript;
+    }).join(' ');
+    // console.log(transcripts);
+
+    para.textContent = transcripts;
+
+    if (e.results[0].isFinal) {
+      words.appendChild(para);
+      para = document.createElement('p');
+    }
+
+    // can be used to call functions
+    if (transcripts.includes('Siri get temperature')) {
+      const temp = fetchTemperature();
+      console.log(`${temp} degrees celsius`);
+    }
+
+  });
+
+  // when speaking stops, it should start recognition again
+  // so that the result event listener gets hit again
+  // we don't call the function here but rather provide the name of the function
+  // hence recognition.start not recognition.start()
+  recognition.addEventListener('end', recognition.start);
+
+  recognition.start();
+
+  function fetchTemperature() {
+    return 10;
+  }
 
 </script>
 

@@ -28,7 +28,79 @@
 <script>
   const addItems = document.querySelector('.add-items');
   const itemsList = document.querySelector('.plates');
-  const items = [];
+
+  // if items saved in the local storage then
+  // get that, parse it to convert it into its original object form
+  // and populate the list
+  const items = JSON.parse(localStorage.getItem('items')) || [];
+
+  function addToList(e) {
+    // console.log(e, e.type);
+
+    // prevents form element ('this' in this case) to reload
+    // or navigate to another page
+    e.preventDefault(); 
+    const text = (this.querySelector('[name=item]')).value;
+    const item = {
+      text: text,
+      done: false 
+    };
+    // console.log(item);  
+
+    items.push(item);
+    console.table(items);
+
+    populateList(items, itemsList);
+
+    // save to localStorage
+    // we need to stringify the list in order to save
+    localStorage.setItem('items', JSON.stringify(items));
+
+    // resets the form element
+    this.reset();
+  }
+
+  function populateList(plates = [], platesList) {
+    platesList.innerHTML = plates.map((plate, i) => {
+      return `<li>
+                <input id='item${i}' type='checkbox' name='item-list' data-index=${i} value=${plate.text} ${plate.done?'checked':''}/>
+                <label for='item${i}'>${plate.text}</label>
+              </li>`;
+    }).join('');
+  }
+
+  function toggleDone(e) {
+    // console.log(e, e.type, e.target);
+
+    // if target is not an input element, then skip it
+    if (!e.target.matches('input')) return;
+    // console.log(e.target);
+    const elem = e.target;
+    
+    console.log(elem.dataset.index);
+    // get the index of the target element
+    const idx = elem.dataset.index;
+
+    // toggle the done status of that element
+    // Note: This event is only invoked when we click on any items, not add to the list,
+    // hence items list will have all the list of items
+    items[idx].done = !items[idx].done;
+
+    // persist the change in the local storage
+    localStorage.setItem('items', JSON.stringify(items));
+  }
+
+  addItems.addEventListener('submit', addToList);
+
+  // Event delegation: parent will listen for the click event
+  itemsList.addEventListener('click', toggleDone);
+
+  // in order for the items (from localStorage)
+  // to get populated at the page load
+  populateList(items, itemsList);
+
+  // const inps = document.querySelectorAll('input');
+  // inps.forEach(inp => inp.addEventListener('click', () => alert('hi')));
 
 </script>
 

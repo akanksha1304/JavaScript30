@@ -8,29 +8,74 @@
 
   <script>
     // start with strings, numbers and booleans
+    let age = 100;
+    let age2 = age;
+    console.log(age, age2);
+
+    // this is copy, not by reference
+    age = 200;
+    console.log(age, age2);
+
+    // with strings
+    let name = 'ak';
+    let name2 = name;
+    console.log(name, name2);
+
+    // this is copy, not reference
+    name = 'is';
+    console.log(name,name2);
 
     // Let's say we have an array
     const players = ['Wes', 'Sarah', 'Ryan', 'Poppy'];
 
     // and we want to make a copy of it.
+    // copy by reference
+    const team = players;
+    console.log(players, team);
+
+    // they will change the both the arrays
+    team[3] = 'Lux';
+    console.log(players, team);
+
+    players[0] = 'Bos';
+    console.log(players, team);
 
     // You might think we can just do something like this:
-
     // however what happens when we update that array?
-
     // now here is the problem!
-
     // oh no - we have edited the original array too!
-
     // Why? It's because that is an array reference, not an array copy. They both point to the same array!
-
     // So, how do we fix this? We take a copy instead!
 
     // one way
+    
+    // it will make the copy of the players array (not by reference)
+    const team2 = players.slice();
+    team2[1] = 'Ninja';
+    console.log(players, team, team2);
+
+    players[0] = 'Harry';
+    console.log(players, team, team2);
 
     // or create a new array and concat the old one in
+    const team3 = [].concat(players);
+    console.log(players, team, team3);
+
+    team3[0] = 'William';
+    console.log(players, team, team3);
 
     // or use the new ES6 Spread
+    const team4 = [...players];
+    console.log(players, team, team4);
+
+    players[0] = 'Cei';
+    console.log(players, team, team4);
+
+    const team5 = Array.from(players);
+    console.log(players, team, team5);
+    
+    team5[1] = 'Dei';
+    console.log(players, team, team5);
 
     // now when we update it, the original one isn't changed
 
@@ -43,12 +88,49 @@
     };
 
     // and think we make a copy:
+    // copy by reference
+    const cap = person;
+    console.log(person, cap);
+    
+    cap.age = 40;
+    console.log(person, cap);
 
     // how do we take a copy instead?
+    // copy all the attributes of person, and change the age to 80,
+    // and add attribute number to 6
+    const cap2 = Object.assign({}, person, {age:80, number:6});
+    console.log(person, cap, cap2);
 
     // We will hopefully soon see the object ...spread
+    const cap3 = {...person};
+    cap3.age = 60;
+    console.log(person, cap3);
 
     // Things to note - this is only 1 level deep - both for Arrays and Objects. lodash has a cloneDeep method, but you should think twice before using it.
+    const obj = {
+      name:'is',
+      age:12,
+      social: {
+        twitter: '@isha',
+        fb: 'ish'
+      }
+    }
+
+    console.log(obj);
+    const newObj = Object.assign({}, obj);
+
+    newObj.age = 23;
+    newObj.social.twitter = '@ak13';
+    // only newObj age will be modified,
+    //but both obj and newObj social.twitter will be modified
+    console.log(obj, newObj);
+
+    // trick: alternative to deep clone
+    const newObj2 = JSON.parse(JSON.stringify(obj));
+    // none of these will modify object 'obj'
+    newObj2.age = 31;
+    newObj2.social.twitter = '@tweet13';
+    console.log(obj, newObj, newObj2);
 
   </script>
 

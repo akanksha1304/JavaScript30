@@ -21,7 +21,21 @@
   <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
 
   <style>
+    :root {
+      --base: #ffc600;
+      --spacing: 10px;
+      --blur: 10px;
+    }
 
+    img {
+      padding: var(--spacing);
+      background: var(--base);
+      filter: blur(var(--blur));
+    }
+
+    .hl {
+      color: var(--base);
+    }
     /*
       misc styles, nothing to do with CSS variables
     */
@@ -45,6 +59,38 @@
   </style>
 
   <script>
+    function update() {
+      // console.log(this);
+
+      // dataset is an object that will contain all the data attributes
+      // of that element (eg: data-sizing)
+      // console.log(this.dataset);
+
+      // if the element has the property data-sizing, then assign that value to suffix var
+      // if The elment doesn't contain attribute data-sizing, then keep suffix empty 
+      // without (|| '') is suffix will be assigned 'undefined' if no data-sizing attribute is there.
+      const suffix = this.dataset.sizing || '';
+      // console.log(suffix);
+
+      // this will give the value of the 'name' attribute of the input elements.
+      // in this case, the name of these elements are spacing, blur and base;
+      // same (except prefix --) as the value of the variables which is
+      // used to manipulate the image.
+      // console.log(this.name);
+      document.documentElement.style.setProperty(`--${this.name}`, this.value+suffix); // This will change the value of the variables defined in the root.
+    };
+
+    // select all elements of type input with class 'controls'
+    const inps = document.querySelectorAll('.controls input');
+
+    // add 'change' eventListener to each of these element.
+    // At any change to these elements, update function will be called
+    inps.forEach(inp => inp.addEventListener('change', update));
+
+    // adding an event listener for 'mousemove' so that the value
+    // aso get changed when the mouse is moving, rather than only 
+    // when mouse is let go.
+    inps.forEach(inp => inp.addEventListener('mousemove', update));
   </script>
 
 </body>

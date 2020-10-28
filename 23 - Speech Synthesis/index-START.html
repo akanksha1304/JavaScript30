@@ -35,6 +35,71 @@
   const options = document.querySelectorAll('[type="range"], [name="text"]');
   const speakButton = document.querySelector('#speak');
   const stopButton = document.querySelector('#stop');
+
+  msg.text = document.querySelector('[name="text"]').value;
+  // console.log(msg);
+
+
+  function populateVoices() {
+    voices = this.getVoices().filter(voice => voice.lang.includes('en'));
+    // console.log(voices);
+
+    const voiceOptions = voices.map(voice =>
+    `<option value="${voice.name}">${voice.name} (${voice.lang})</option>`
+    ).join('');
+
+    voicesDropdown.innerHTML = voiceOptions;
+    // console.log(voiceOptions);
+  }
+
+  function setVoice() {
+    const selectedVoice = document.querySelector('[name="voice"]').value;
+
+    // the above line can be written as:
+    // const selectedVoice = this.value;
+    console.log(`voice is: ${selectedVoice}`);
+    msg.voice = voices.find(voice => voice.name === selectedVoice);
+    speechSynthesis.speak(msg);
+    // console.log(msg.voice);
+  }
+
+  // whenever some other option is selected,
+  // cancel speaking and start speaking again in the 
+  // newly selected language
+  function toggle(speakAgain=true) {
+    // will immediately cancel the current speaking
+    speechSynthesis.cancel();
+
+    if (speakAgain)
+    {
+      // speaks from the start in the new language
+      setVoice();
+      // speechSynthesis.speak();
+    }
+  }
+
+  function setOption(e) {
+    console.log(this.name, this.value, e.target);
+    msg[this.name] = this.value;
+    toggle();
+  }
+
+  speechSynthesis.addEventListener('voiceschanged', populateVoices);
+  voicesDropdown.addEventListener('change', toggle);
+  options.forEach(option => option.addEventListener('change', setOption));
+  speakButton.addEventListener('click', toggle);
+
+  // // the above one is same as:
+  // speakButton.addEventListener('click', toggle.bind(null,true));
+
+  // // NOTE: can't pass parameters like this
+  // stopButton.addEventListener('click', toogle(false));
+
+  // // can pass parameters in the following way
+  // stopButton.addEventListener('click', toggle.bind(null,false));
+
+  // another way to pass parameters
+  stopButton.addEventListener('click', () => toggle(false));
 </script>
 
 </body>

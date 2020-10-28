@@ -27,6 +27,30 @@
 
   <script>
     // 👀👀👀👀👀👀👀👀👀👀👀👀👀👀👀
+    const triggers = document.querySelectorAll('a');
+    const highlightElem = document.createElement('span');
+    highlightElem.classList.add('highlight');
+    document.body.appendChild(highlightElem);
+
+    function highlightIt(e) {
+      console.log(e.type, this);
+
+      // get the position and dimensions of the link
+      const linkCoords = this.getBoundingClientRect();
+      console.log(linkCoords);
+      highlightElem.style.width = `${linkCoords.width}px`;
+      highlightElem.style.height = `${linkCoords.height}px`;
+
+      // this adjustment is needed because when we scroll then
+      // the linkCoords.left and linkCoords.top will be off
+      const x = linkCoords.left + window.scrollX;
+      const y = linkCoords.top + window.scrollY;
+      highlightElem.style.transform =  `translate(${x}px,${y}px)`;
+    }
+
+    // for each trigger, if mouse move on that then highlight it (call function)
+    triggers.forEach(trigger => trigger.addEventListener('mouseenter', highlightIt));
+
   </script>
 </body>
 </html>

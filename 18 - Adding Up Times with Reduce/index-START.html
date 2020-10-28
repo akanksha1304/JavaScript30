@@ -181,7 +181,36 @@
       Video 58
     </li>
   </ul>
+
 <script>
+  const listElems = Array.from(document.querySelectorAll(['[data-time]']));
+  // console.log(listElems);
+  
+  const totalSecs = listElems.reduce((secs, listElem) => {
+    const timeStamp = listElem.dataset.time;
+
+    const timeArr = timeStamp.split(':');
+
+    if (timeArr.length>2) {
+      secs += parseInt(timeArr[0])*3600 + parseInt(timeArr[1]) + parseInt(timeArr[2])*60 ;
+    }
+    else {
+      secs += parseInt(timeArr[0])*60 + parseInt(timeArr[1]);
+    }
+
+    console.log(timeArr,secs);
+    return secs;
+  },0);
+  
+  console.log(`total secs are: ${totalSecs}`);
+  const hours = Math.floor(totalSecs/3600);
+  const remainingMins = totalSecs - hours*3600;
+  const minutes = Math.floor(remainingMins/60);
+  const secs = remainingMins-minutes*60;
+  console.log(`${hours}:${minutes}:${secs}`);
+
+
+
 </script>
 </body>
 </html>

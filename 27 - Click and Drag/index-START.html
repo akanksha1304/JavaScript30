@@ -35,6 +35,71 @@
   </div>
 
 <script>
+  const slider = document.querySelector('.items');
+  // console.log(slider);
+
+  // tells if the mouse is clicked down or not
+  let isDown = false;
+
+  let startX;
+  let scrollLeft;
+
+  slider.addEventListener('mouseup', () => {
+    isDown = false;
+    slider.classList.remove('active');
+  });
+
+  slider.addEventListener('mousedown', (e) => {
+    isDown = true;
+    slider.classList.add('active');
+
+    // e.pageX will be give the 'this''s absolute X position
+    // Suppose there is no margin, and the some point in left-corner is 5px
+    // now if we add 100px margin around it then that point in left-corner will be 105px,
+    // however we still want 5px. So, subtracting slider.offsetLeft (100px) will
+    // give 5px (105px-100px)
+    startX = e.pageX - slider.offsetLeft;
+    // console.log(startX);
+
+    scrollLeft = slider.scrollLeft;
+  });
+
+  slider.addEventListener('mousemove', (e) => {
+    // if mouse not held down, then mouse move shouldn't do anything
+    if (!isDown) {
+      // console.log(`slider class: ${slider.classList.value}`);
+      return;
+    }
+
+    // console.log(`${isDown} slider class: ${slider.classList.value}, do work!`);
+    e.preventDefault(); // not sure why it was used here (!?!), however it works even after commenting out this line
+    
+    // how much cursor has moved (as a result for mouse move)
+    // startX was its location when the mouse was pressed down initally
+    const x = e.pageX - slider.offsetLeft;
+    // const deviation = x-startX;
+
+    // to increase the intensity of scroll
+    const deviation = 3*(x-startX);
+    console.log({x, startX, deviation, scrollLeft});
+
+    // previously occupied scrollLeft captues the scrolled location 
+    // (leftmost edge) when the mouse was clocked down
+    // if we need to scroll further to the right of items, then the deviation will be -ve
+    // (because x will scrolled to the left of startLeft as we pull the items left to view the right side)
+    // hence, we subtract negative deviation which leads to higher slider.scrollLeft
+    // if we want to scroll to the left of items (towards start)
+    // then x will be to the right of startX (as we need to pull the items to the right to view its start), hence deviation will be +ve
+    // so subtracting the positive deviation will lead to smaller slider.scollLeft
+    // hence, we move towards the start
+    slider.scrollLeft =  scrollLeft - deviation;
+  });
+
+  slider.addEventListener('mouseleave', () => {
+    isDown = false;
+    slider.classList.remove('active');
+  });
+
 </script>
 
   </body>

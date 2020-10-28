@@ -25,6 +25,10 @@ body {
   transition: transform 0.5s;
 }
 
+.fixed-nav .site-wrap {
+  transform: scale(1);
+}
+
 header {
   text-align: center;
   height: 50vh;
@@ -50,6 +54,11 @@ nav {
   z-index: 1;
 }
 
+.fixed-nav nav {
+  position: fixed;
+  box-shadow: 0 5px rgba(0,0,0,0.1);
+}
+
 nav ul {
   margin: 0;
   padding:0;
@@ -58,6 +67,7 @@ nav ul {
 }
 
 nav li {
+  /* border: 1px solid red; */
   flex: 1;
   text-align: center;
   display: flex;
@@ -73,6 +83,12 @@ li.logo {
   font-weight: 600;
   font-size: 30px;
 }
+
+.fixed-nav li.logo {
+  max-width: 500px; /* using width, rather than max-width, won't let the transition (declared above in li.ligo{} happen */
+  /* overflow:visible; */
+}
+
 
 li.logo a {
   color: black;
